@@ -1,26 +1,41 @@
 import { ErrorRequestHandler, Request, Response, NextFunction } from "express"
 
 import Flascard from "../models/flashcard"
-
+import asyncHandler from "express-async-handler"
 //GET /flashcard
-export const getFlashcards = (req: Request, res: Response) => {
-  res.status(200).json({ message: "Get goals" })
-}
+export const getFlashcards = asyncHandler(
+  async (req: Request, res: Response) => {
+    res.status(200).json({ message: "Get goals" })
+  }
+)
 
 //POST /flashcards
-export const createFlashcard = (req: Request, res: Response) => {
-  res.status(200).json({ message: "Set goals" })
-}
+export const createFlashcard = asyncHandler(
+  async (req: Request, res: Response) => {
+    if (!req.body.front || !req.body.back) {
+      res.status(400)
+      throw new Error(
+        "To add a card, you need the texts on the front and back sides"
+      )
+    }
+
+    res.status(200).json({ message: "Set goals" })
+  }
+)
 
 //PATCH /flashcards/:_id
-export const updateFlashcard = (req: Request, res: Response) => {
-  res.status(200).json({ message: `Patch goal ${req.params._id}` })
-}
+export const updateFlashcard = asyncHandler(
+  async (req: Request, res: Response) => {
+    res.status(200).json({ message: `Patch goal ${req.params._id}` })
+  }
+)
 
 //DELETE /flashcards/:_id
-export const deleteFlashcard = (req: Request, res: Response) => {
-  res.status(200).json({ message: `Delete goal ${req.params._id}` })
-}
+export const deleteFlashcard = asyncHandler(
+  async (req: Request, res: Response) => {
+    res.status(200).json({ message: `Delete goal ${req.params._id}` })
+  }
+)
 
 // async findOne(req: Request, res: Response, next: NextFunction) {
 //   const flashcard = await Flascard.findOne({ _id: req.params._id })
