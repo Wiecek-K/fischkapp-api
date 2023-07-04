@@ -1,25 +1,20 @@
 /* eslint-disable node/no-missing-import */
 import { Router, Request, Response } from "express"
-import flashcardsController from "../controllers/flashcardsController"
-import { catchAsync } from "../middlewares/errors"
-
+// import { catchAsync } from "../middlewares/errors"
+import {
+  getFlashcards,
+  createFlashcard,
+  updateFlashcard,
+  deleteFlashcard,
+} from "../controllers/flashcardsController"
 const router = Router()
 
-router.get("/", (req: Request, res: Response) => {
-  res.status(200).json({ message: "Get goals" })
-})
+//GET & POST  /flashcard
+router.route("/").get(getFlashcards).post(createFlashcard)
 
-router.post("/", (req: Request, res: Response) => {
-  res.status(200).json({ message: "Set goals" })
-})
+//PATCH & DELETE  /flashcards/:_id
+router.route("/:_id").patch(updateFlashcard).delete(deleteFlashcard)
 
-router.patch("/:_id", (req: Request, res: Response) => {
-  res.status(200).json({ message: `Patch goal ${req.params._id}` })
-})
-
-router.delete("/:_id", (req: Request, res: Response) => {
-  res.status(200).json({ message: `Delete goal ${req.params._id}` })
-})
 //GET /flashcard
 // router.get("/:id", catchAsync(flashcardsController.findOne))
 
