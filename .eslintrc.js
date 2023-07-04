@@ -16,5 +16,8 @@ module.exports = {
       },
     ],
     "@typescript-eslint/no-unused-vars": "warn",
+    "node/no-unsupported-features/es-syntax": 0,
+    "node/no-unpublished-import": 0,
+    "node/no-missing-import": 0,
   },
 }

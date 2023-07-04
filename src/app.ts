@@ -1,8 +1,10 @@
 import { MongoClient, ServerApiVersion } from "mongodb"
 import Express from "express"
-
 import dotenv from "dotenv"
+
 dotenv.config()
+
+const card1 = { front: "kwas", back: "cytrynowy" }
 
 import express from "express"
 const app = express()
@@ -20,13 +22,19 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    // Connect the client to the server	(optional starting in v4.7)
     await client.connect()
     // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 })
+    const db = client.db("admin")
+    await db.command({ ping: 1 })
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     )
+    db.collection("FlashCards").insertOne(card1)
+    {try {
+      console
+    } catch (error) {
+      console.error(error)
+    }}
   } catch (error) {
     console.error(error)
   } finally {
