@@ -1,4 +1,3 @@
-import { MongoClient, Db } from "mongodb"
 import mongoose from "mongoose"
 import "colors"
 import dotenv from "dotenv"
@@ -12,12 +11,3 @@ export const connectDatabase = async () => {
     throw new Error(err)
   }
 }
-
-// export const uri = process.env.MONGODB_URI
-// const dbName = "Fischkapp-API"
-
-// export async function connectDatabase(): Promise<Db> {
-//   const client = await MongoClient.connect(uri)
-//   const db = client.db(dbName)
-//   return db
-// }
