@@ -46,7 +46,7 @@ export const updateFlashcard = asyncHandler(
       )
       res.status(200).json(updateFlashcard)
     } catch (err) {
-      res.status(400).json({ error: err.message })
+      res.status(500).json({ error: err.message })
     }
   }
 )

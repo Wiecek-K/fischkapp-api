@@ -1,7 +1,6 @@
 import mongoose from "mongoose"
-import { arrayBuffer } from "stream/consumers"
 
-interface IFlashcard {
+export interface IFlashcard {
   front: string
   back: string
   author?: string

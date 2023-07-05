@@ -1,5 +1,5 @@
 import { Router } from "express"
-
+import validationMiddleware from "../middlewares/validationMiddleware"
 import {
   createFlashcard,
   updateFlashcard,
@@ -10,7 +10,6 @@ const router = Router()
 router.route("/").post(createFlashcard)
 
 //PATCH /flashcards/:id
-router.route("/:id").patch(updateFlashcard)
-
+router.route("/:id").patch(validationMiddleware, updateFlashcard)
 
 export default router
