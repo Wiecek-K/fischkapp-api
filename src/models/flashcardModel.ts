@@ -1,13 +1,13 @@
 import mongoose from "mongoose"
 
 // 1. Create an interface representing a document in MongoDB
-interface IFlashCard {
+interface IFlashcard {
   front: string
   back: string
 }
 
 // 2. Create a Schema corresponding to the document interface.
-const Flashcard = new mongoose.Schema<IFlashCard>(
+export const flashcardSchema = new mongoose.Schema<IFlashcard>(
   {
     front: { type: String, required: true },
     back: { type: String, required: true },
@@ -34,4 +34,4 @@ const Flashcard = new mongoose.Schema<IFlashCard>(
 //   console.log(user.email); // 'bill@initech.com'
 // }
 
-export default mongoose.model("Flashcard", Flashcard)
+export default mongoose.model("Flashcard", flashcardSchema)

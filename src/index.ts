@@ -1,10 +1,15 @@
 import express from "express"
 import dotenv from "dotenv"
+import "colors"
+
 import flashcardRouter from "./routes/flashcards"
 import { errorHandler } from "./middlewares/errors"
-dotenv.config()
+import { connectDatabase } from "./config/database"
 
+dotenv.config()
 const port = process.env.PORT || 5000
+
+connectDatabase()
 
 const app = express()
 

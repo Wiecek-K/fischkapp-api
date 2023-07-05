@@ -1,11 +1,13 @@
 import { ErrorRequestHandler, Request, Response, NextFunction } from "express"
 
-import Flascard from "../models/flashcard"
+import Flascard from "../models/flashcardModel"
 import asyncHandler from "express-async-handler"
+
 //GET /flashcard
 export const getFlashcards = asyncHandler(
   async (req: Request, res: Response) => {
-    res.status(200).json({ message: "Get goals" })
+    const flashcards = await Flascard.find()
+    res.status(200).json(flashcards)
   }
 )
 
@@ -18,27 +20,51 @@ export const createFlashcard = asyncHandler(
         "To add a card, you need the texts on the front and back sides"
       )
     }
+    const flashcard = await Flascard.create({
+      front: req.body.front,
+      back: req.body.back,
+    })
 
-    res.status(200).json({ message: "Set goals" })
+    res.status(200).json(flashcard)
   }
 )
 
-//PATCH /flashcards/:_id
+//PATCH /flashcards/:id
 export const updateFlashcard = asyncHandler(
   async (req: Request, res: Response) => {
-    res.status(200).json({ message: `Patch goal ${req.params._id}` })
+    const flashcard = await Flascard.findById(req.params.id)
+
+    if (!flashcard) {
+      res.status(400)
+      throw new Error("Flascard not found")
+    }
+
+    const updateFlashcard = await Flascard.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    )
+    res.status(200).json(updateFlashcard)
   }
 )
 
-//DELETE /flashcards/:_id
+//DELETE /flashcards/:id
 export const deleteFlashcard = asyncHandler(
   async (req: Request, res: Response) => {
-    res.status(200).json({ message: `Delete goal ${req.params._id}` })
+    const flashcard = await Flascard.findById(req.params.id)
+
+    if (!flashcard) {
+      res.status(400)
+      throw new Error("Flascard not found")
+    }
+    const deleteFlashcard = await Flascard.findByIdAndRemove(req.params.id)
+
+    res.status(200).json(deleteFlashcard)
   }
 )
 
 // async findOne(req: Request, res: Response, next: NextFunction) {
-//   const flashcard = await Flascard.findOne({ _id: req.params._id })
+//   const flashcard = await Flascard.findOne({ id: req.params.id })
 //   if (!flashcard) return next()
 //   return res.status(200).send({ data: flashcard })
 // },

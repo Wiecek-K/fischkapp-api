@@ -12,8 +12,8 @@ const router = Router()
 //GET & POST  /flashcard
 router.route("/").get(getFlashcards).post(createFlashcard)
 
-//PATCH & DELETE  /flashcards/:_id
-router.route("/:_id").patch(updateFlashcard).delete(deleteFlashcard)
+//PATCH & DELETE  /flashcards/:id
+router.route("/:id").patch(updateFlashcard).delete(deleteFlashcard)
 
 //GET /flashcard
 // router.get("/:id", catchAsync(flashcardsController.findOne))
