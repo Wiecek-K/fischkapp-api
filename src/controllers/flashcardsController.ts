@@ -28,3 +28,25 @@ export const createFlashcard = asyncHandler(
     res.status(200).json(flashcard)
   }
 )
+
+//PATCH /flashcards/:id
+export const updateFlashcard = asyncHandler(
+  async (req: Request, res: Response) => {
+    const flashcard = await Flascard.findById(req.params.id)
+
+    if (!flashcard) {
+      res.status(404).send("Flascard not found")
+      return
+    }
+    try {
+      const updateFlashcard = await Flascard.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        { new: true, runValidators: true }
+      )
+      res.status(200).json(updateFlashcard)
+    } catch (err) {
+      res.status(500).json({ error: err.message })
+    }
+  }
+)
