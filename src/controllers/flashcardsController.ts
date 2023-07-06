@@ -23,6 +23,18 @@ export const getFlashcardsByAuthor = asyncHandler(
   }
 )
 
+//GET /flashcards/tags/:tag  Get all the records by specific tag
+export const getFlashcardsByTag = asyncHandler(
+  async (req: Request, res: Response) => {
+    const tag = req.params.tag
+    const flashcards = await Flascard.find({ tags: { $in: [tag] } }).sort({
+      createdAt: -1,
+    })
+
+    res.status(200).json(flashcards)
+  }
+)
+
 //POST /flashcards
 export const createFlashcard = asyncHandler(
   async (req: Request, res: Response) => {
@@ -43,6 +55,8 @@ export const createFlashcard = asyncHandler(
     const flashcard = await Flascard.create({
       front: req.body.front,
       back: req.body.back,
+      tags: req.body?.tags,
+      author: req.body?.author
     })
 
     res.status(200).json(flashcard)
