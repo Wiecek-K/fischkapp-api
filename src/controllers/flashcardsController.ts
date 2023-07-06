@@ -3,6 +3,38 @@ import { Request, Response } from "express"
 import Flascard from "../models/flashcardModel"
 import asyncHandler from "express-async-handler"
 
+//GET /flashcard
+export const getFlashcards = asyncHandler(
+  async (req: Request, res: Response) => {
+    const flashcards = await Flascard.find().sort({ createdAt: -1 })
+    res.status(200).json(flashcards)
+  }
+)
+
+//GET /flashcard/author/:author
+export const getFlashcardsByAuthor = asyncHandler(
+  async (req: Request, res: Response) => {
+    const author = req.params.author
+    const flashcards = await Flascard.find({ author }).sort({
+      createdAt: -1,
+    })
+
+    res.status(200).json(flashcards)
+  }
+)
+
+//GET /flashcards/tags/:tag  Get all the records by specific tag
+export const getFlashcardsByTag = asyncHandler(
+  async (req: Request, res: Response) => {
+    const tag = req.params.tag
+    const flashcards = await Flascard.find({ tags: { $in: [tag] } }).sort({
+      createdAt: -1,
+    })
+
+    res.status(200).json(flashcards)
+  }
+)
+
 //POST /flashcards
 export const createFlashcard = asyncHandler(
   async (req: Request, res: Response) => {
@@ -23,6 +55,8 @@ export const createFlashcard = asyncHandler(
     const flashcard = await Flascard.create({
       front: req.body.front,
       back: req.body.back,
+      tags: req.body?.tags,
+      author: req.body?.author
     })
 
     res.status(200).json(flashcard)
