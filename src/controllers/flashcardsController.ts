@@ -11,6 +11,18 @@ export const getFlashcards = asyncHandler(
   }
 )
 
+//GET /flashcard/author/:author
+export const getFlashcardsByAuthor = asyncHandler(
+  async (req: Request, res: Response) => {
+    const author = req.params.author
+    const flashcards = await Flascard.find({ author }).sort({
+      createdAt: -1,
+    })
+
+    res.status(200).json(flashcards)
+  }
+)
+
 //POST /flashcards
 export const createFlashcard = asyncHandler(
   async (req: Request, res: Response) => {
