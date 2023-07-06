@@ -3,6 +3,14 @@ import { Request, Response } from "express"
 import Flascard from "../models/flashcardModel"
 import asyncHandler from "express-async-handler"
 
+//GET /flashcard
+export const getFlashcards = asyncHandler(
+  async (req: Request, res: Response) => {
+    const flashcards = await Flascard.find().sort({ createdAt: -1 })
+    res.status(200).json(flashcards)
+  }
+)
+
 //POST /flashcards
 export const createFlashcard = asyncHandler(
   async (req: Request, res: Response) => {
