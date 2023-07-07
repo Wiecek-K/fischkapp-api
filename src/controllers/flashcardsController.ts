@@ -56,7 +56,7 @@ export const createFlashcard = asyncHandler(
       front: req.body.front,
       back: req.body.back,
       tags: req.body?.tags,
-      author: req.body?.author
+      author: req.body?.author,
     })
 
     res.status(200).json(flashcard)
@@ -82,5 +82,30 @@ export const updateFlashcard = asyncHandler(
     } catch (err) {
       res.status(500).json({ error: err.message })
     }
+  }
+)
+
+//DELETE /flashcards/:id
+export const deleteFlashcard = asyncHandler(
+  async (req: Request, res: Response) => {
+    const flashcard = await Flascard.findById(req.params.id)
+
+    if (!flashcard) {
+      res.status(404).send("Flascard not found")
+      return
+    }
+
+    const currentTime = new Date()
+    if (5 * 60 * 1000 + flashcard.createdAt.getTime() < currentTime.getTime()) {
+      res
+        .status(403)
+        .send(
+          "You cannot delete a card that has been created for more than 5 minutes."
+        )
+      return
+    }
+
+    const deleteFlashcard = await Flascard.findByIdAndRemove(req.params.id)
+    res.status(200).json(deleteFlashcard)
   }
 )
