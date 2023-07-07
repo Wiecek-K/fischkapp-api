@@ -5,6 +5,8 @@ export interface IFlashcard {
   back: string
   author?: string
   tags?: string[]
+  createdAt: Date
+  updatedAt: Date
 }
 
 export const flashcardSchema = new mongoose.Schema<IFlashcard>(

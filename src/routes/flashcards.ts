@@ -6,6 +6,7 @@ import {
   getFlashcards,
   getFlashcardsByAuthor,
   getFlashcardsByTag,
+  deleteFlashcard,
 } from "../controllers/flashcardsController"
 const router = Router()
 
@@ -18,7 +19,10 @@ router.route("/author/:author").get(getFlashcardsByAuthor)
 //GET /flashcards/tags/:tag  Get all the records by specific tag
 router.route("/tags/:tag").get(getFlashcardsByTag)
 
-//PATCH /flashcards/:id
-router.route("/:id").patch(validationMiddleware, updateFlashcard)
+//PATCH & DELETE /flashcards/:id
+router
+  .route("/:id")
+  .patch(validationMiddleware, updateFlashcard)
+  .delete(deleteFlashcard)
 
 export default router
