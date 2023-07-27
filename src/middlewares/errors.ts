@@ -6,6 +6,7 @@ export const notFound = (req: Request, res: Response, next: NextFunction) => {
   next(err)
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
   const statusCode = res.statusCode ? res.statusCode : 500
 

@@ -1,5 +1,6 @@
 import express from "express"
 import dotenv from "dotenv"
+import cors from "cors"
 import "colors"
 
 import flashcardRouter from "./routes/flashcards"
@@ -7,11 +8,18 @@ import { errorHandler } from "./middlewares/errors"
 import { connectDatabase } from "./config/database"
 
 dotenv.config()
-const port = process.env.PORT || 5000
-
+const port = process.env.PORT
+const domain = process.env.DOMAIN
 connectDatabase()
 
 const app = express()
+
+// Ustawienie CORS z wykorzystaniem zmiennej dozwolonaDomena
+const corsOptions = {
+  origin: domain,
+}
+
+app.use(cors(corsOptions))
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
@@ -23,4 +31,3 @@ app.use(errorHandler)
 app.listen(port, () => {
   console.log(`Server runing on ${port}`)
 })
-
