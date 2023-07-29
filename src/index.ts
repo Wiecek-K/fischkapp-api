@@ -6,6 +6,7 @@ import "colors"
 import flashcardRouter from "./routes/flashcards"
 import { errorHandler } from "./middlewares/errors"
 import { connectDatabase } from "./config/database"
+import checkAuthorization from "./middlewares/corsMiddlewares"
 
 dotenv.config()
 const port = process.env.PORT
@@ -17,8 +18,10 @@ const app = express()
 // Ustawienie CORS z wykorzystaniem zmiennej dozwolonaDomena
 const corsOptions = {
   origin: domain,
+  allowedHeaders: ["Content-Type", "Authorization"],
 }
 
+app.use(checkAuthorization)
 app.use(cors(corsOptions))
 
 app.use(express.json())
