@@ -13,7 +13,8 @@
     "dev": "tsnd --respawn src/index.ts",
     "server": "node index.js",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "prod": "tsc && node ./dist/index.js"
+    "build": "tsc --noEmitOnError",
+    "prod": "node ./dist/index.js"
   },
   "dependencies": {
     "@types/cors": "^2.8.13",
@@ -23,9 +24,11 @@
     "joi": "^17.9.2",
     "mongodb": "^5.6.0",
     "mongoose": "^7.3.1",
+    "ts-node": "^10.9.1",
     "node": "^20.3.1"
   },
   "devDependencies": {
+    "typescript": "^5.1.6",
     "@types/express": "^4.17.17",
     "@types/node": "^20.3.2",
     "@typescript-eslint/eslint-plugin": "^5.60.1",
@@ -43,7 +46,6 @@
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-standard": "^5.0.0",
     "express-async-handler": "^1.2.0",
-    "ts-node-dev": "^2.0.0",
-    "typescript": "^5.0.4"
+    "ts-node-dev": "^2.0.0"
   }
 }
