@@ -15,12 +15,15 @@ connectDatabase()
 
 const app = express()
 
-// Ustawienie CORS z wykorzystaniem zmiennej dozwolonaDomena
 const corsOptions = {
   origin: domain,
-  allowedHeaders: ["Content-Type", "Authorization"],
+  allowedHeaders: [
+    "Content-Type",
+    "Authorization",
+    "ngrok-skip-browser-warning",
+  ],
 }
-
+app.options("*", cors()) // enable pre-flight request
 app.use(checkAuthorization)
 app.use(cors(corsOptions))
 
