@@ -12,7 +12,8 @@
   "scripts": {
     "dev": "tsnd --respawn src/index.ts",
     "server": "node index.js",
-    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
+    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "prod": "tsc && node ./dist/index.js"
   },
   "dependencies": {
     "@types/cors": "^2.8.13",
