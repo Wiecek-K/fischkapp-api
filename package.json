@@ -12,7 +12,7 @@
   "scripts": {
     "dev": "tsnd --respawn src/index.ts",
     "server": "node index.js",
-    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "eslint src --ext  ts,tsx --report-unused-disable-directives --max-warnings 0",
     "build": "tsc --project tsconfig.prod.json",
     "prod": "node ./dist/index.js"
   },
