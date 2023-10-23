@@ -15,6 +15,7 @@ export const flashcardSchema = new mongoose.Schema<IFlashcard>(
     back: { type: String, required: true },
     tags: {
       type: [String],
+      default: [],
     },
     author: {
       type: String,

@@ -13,7 +13,7 @@ const port = process.env.PORT
 const domain = process.env.DOMAIN
 connectDatabase()
 
-const app = express()
+export const app = express()
 
 const corsOptions = {
   origin: domain,
