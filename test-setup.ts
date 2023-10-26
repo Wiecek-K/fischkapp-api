@@ -1,9 +1,8 @@
 import { MongoMemoryServer } from "mongodb-memory-server"
-import mongoose, { Connection } from "mongoose"
-import { flashcardSchema } from "./src/models/flashcardModel"
+import mongoose from "mongoose"
+import flashcardModel from "./src/models/flashcardModel"
 
-let mongoServer: MongoMemoryServer
-let dbConnection: Connection
+const mongod = MongoMemoryServer.create()
 
 export const startingStateDB = [
   {
@@ -39,19 +38,23 @@ export const startingStateDB = [
 ]
 
 async function connectDatabase() {
-  mongoServer = await MongoMemoryServer.create()
-  const mongoUri = mongoServer.getUri()
-  dbConnection = await mongoose.createConnection(mongoUri)
-  console.log("mock DB")
+  const mongoUri = await (await mongod).getUri()
+  console.log(mongoUri)
+
+  await mongoose.connect(mongoUri)
 }
 
 async function disconnectDatabase() {
-  await dbConnection.close()
-  await mongoServer.stop()
+  await mongoose.connection.dropDatabase()
+  await mongoose.connection.close()
+  await (await mongod).stop()
 }
 
 beforeAll(async () => {
+  console.log(1)
+
   await connectDatabase()
+  console.log(2)
 })
 
 afterAll(async () => {
@@ -59,9 +62,10 @@ afterAll(async () => {
 })
 
 beforeEach(async () => {
-  await dbConnection.dropDatabase()
+  console.log(3)
 
-  const TestData = dbConnection.model("TestData", flashcardSchema)
-  await TestData.create(startingStateDB)
-  console.log("reset DB", startingStateDB)
+  await mongoose.connection.dropDatabase()
+
+  flashcardModel.create(startingStateDB)
+  console.log(4)
 })
