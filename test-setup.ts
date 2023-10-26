@@ -51,10 +51,7 @@ async function disconnectDatabase() {
 }
 
 beforeAll(async () => {
-  console.log(1)
-
   await connectDatabase()
-  console.log(2)
 })
 
 afterAll(async () => {
@@ -62,10 +59,7 @@ afterAll(async () => {
 })
 
 beforeEach(async () => {
-  console.log(3)
-
   await mongoose.connection.dropDatabase()
 
-  flashcardModel.create(startingStateDB)
-  console.log(4)
+  flashcardModel.insertMany(startingStateDB)
 })
