@@ -15,7 +15,7 @@
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "build": "tsc --project tsconfig.prod.json",
     "prod": "node ./dist/index.js",
-    "test": "jest --runInBand --detectOpenHandles"
+    "test": "jest --runInBand"
   },
   "dependencies": {
     "colors": "^1.4.0",
