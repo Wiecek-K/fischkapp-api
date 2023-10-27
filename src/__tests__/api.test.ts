@@ -30,18 +30,17 @@ describe("flashcard", () => {
     })
     describe("get cards by author route", () => {
       it("Function returns correct number of flashcards written by the requested author, in the correct order, with status 200", async () => {
+        const startingStateFilteredByAuthor = startingStateDB.filter(
+          (flaschcards) => flaschcards.author === "Author1"
+        )
+
         const response = await request(app)
           .get(DEFAULT_ROUTE + "author/Author1")
           .set("Authorization", AUTHORIZATION_KEY)
         const data: IFlashcard[] = response.body
-        console.log(data)
 
         expect(response.status).toBe(200)
         expect(Array.isArray(data)).toBe(true)
-
-        const startingStateFilteredByAuthor = startingStateDB.filter(
-          (flaschcards) => flaschcards.author === "Author1"
-        )
         expect(data.length).toBe(startingStateFilteredByAuthor.length)
 
         const isSorted = data.every((flashcard, index, array) => {
@@ -56,19 +55,18 @@ describe("flashcard", () => {
     })
     describe("get cards by tag route", () => {
       it("Function returns correct number of flashcards with the requested tag, in the correct order, with status 200", async () => {
+        const startingStateFilteredByTag = startingStateDB.filter(
+          (flaschcards) => flaschcards.tags.includes("dog")
+        )
+
         const response = await request(app)
-          .get(DEFAULT_ROUTE + "author/Author1")
+          .get(DEFAULT_ROUTE + "tags/dog")
           .set("Authorization", AUTHORIZATION_KEY)
         const data: IFlashcard[] = response.body
-        console.log(data)
 
         expect(response.status).toBe(200)
         expect(Array.isArray(data)).toBe(true)
-
-        const startingStateFilteredByAuthor = startingStateDB.filter(
-          (flaschcards) => flaschcards.author === "Author1"
-        )
-        expect(data.length).toBe(startingStateFilteredByAuthor.length)
+        expect(data.length).toBe(startingStateFilteredByTag.length)
 
         const isSorted = data.every((flashcard, index, array) => {
           if (index === 0) return true

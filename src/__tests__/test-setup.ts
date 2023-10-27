@@ -29,7 +29,7 @@ export const startingStateDB = [
     _id: "64a6e51a0fbe392a34e00a1b",
     front: "Test Flashcard 3",
     back: "Number Three",
-    tags: ["abc", "dog"],
+    tags: ["dog"],
     author: "Author3",
     createdAt: "2023-07-06T16:00:26.859Z",
     updatedAt: "2023-07-06T16:00:26.859Z",
