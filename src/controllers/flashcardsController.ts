@@ -1,12 +1,12 @@
 import { Request, Response } from "express"
 
-import Flascard from "../models/flashcardModel"
+import Flashcard from "../models/flashcardModel"
 import asyncHandler from "express-async-handler"
 
 //GET /flashcard
 export const getFlashcards = asyncHandler(
   async (req: Request, res: Response) => {
-    const flashcards = await Flascard.find().sort({ createdAt: -1 })
+    const flashcards = await Flashcard.find().sort({ createdAt: -1 })
     res.status(200).json(flashcards)
   }
 )
@@ -15,7 +15,7 @@ export const getFlashcards = asyncHandler(
 export const getFlashcardsByAuthor = asyncHandler(
   async (req: Request, res: Response) => {
     const author = req.params.author
-    const flashcards = await Flascard.find({ author }).sort({
+    const flashcards = await Flashcard.find({ author }).sort({
       createdAt: -1,
     })
 
@@ -27,7 +27,7 @@ export const getFlashcardsByAuthor = asyncHandler(
 export const getFlashcardsByTag = asyncHandler(
   async (req: Request, res: Response) => {
     const tag = req.params.tag
-    const flashcards = await Flascard.find({ tags: { $in: [tag] } }).sort({
+    const flashcards = await Flashcard.find({ tags: { $in: [tag] } }).sort({
       createdAt: -1,
     })
 
@@ -44,7 +44,7 @@ export const createFlashcard = asyncHandler(
         .send("To add a card, you need the texts on the front and back sides")
       return
     }
-    const isExisting = await Flascard.findOne({ front: req.body.front })
+    const isExisting = await Flashcard.findOne({ front: req.body.front })
 
     if (isExisting) {
       res
@@ -52,7 +52,7 @@ export const createFlashcard = asyncHandler(
         .send("You can't duplicate flaschcards, please change the front text")
       return
     }
-    const flashcard = await Flascard.create({
+    const flashcard = await Flashcard.create({
       front: req.body.front,
       back: req.body.back,
       tags: req.body?.tags,
@@ -66,14 +66,14 @@ export const createFlashcard = asyncHandler(
 //PATCH /flashcards/:id
 export const updateFlashcard = asyncHandler(
   async (req: Request, res: Response) => {
-    const flashcard = await Flascard.findById(req.params.id)
+    const flashcard = await Flashcard.findById(req.params.id)
 
     if (!flashcard) {
-      res.status(404).send("Flascard not found")
+      res.status(404).send("Flashcard not found")
       return
     }
     try {
-      const updateFlashcard = await Flascard.findByIdAndUpdate(
+      const updateFlashcard = await Flashcard.findByIdAndUpdate(
         req.params.id,
         req.body,
         { new: true, runValidators: true }
@@ -88,10 +88,10 @@ export const updateFlashcard = asyncHandler(
 //DELETE /flashcards/:id
 export const deleteFlashcard = asyncHandler(
   async (req: Request, res: Response) => {
-    const flashcard = await Flascard.findById(req.params.id)
+    const flashcard = await Flashcard.findById(req.params.id)
 
     if (!flashcard) {
-      res.status(404).send("Flascard not found")
+      res.status(404).send("Flashcard not found")
       return
     }
 
@@ -105,7 +105,7 @@ export const deleteFlashcard = asyncHandler(
       return
     }
 
-    const deleteFlashcard = await Flascard.findByIdAndRemove(req.params.id)
+    const deleteFlashcard = await Flashcard.findByIdAndRemove(req.params.id)
     res.status(200).json(deleteFlashcard)
   }
 )
