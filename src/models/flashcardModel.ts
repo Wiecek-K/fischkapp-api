@@ -1,6 +1,7 @@
 import mongoose from "mongoose"
 
 export interface IFlashcard {
+  _id: string
   front: string
   back: string
   author?: string

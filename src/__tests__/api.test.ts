@@ -102,7 +102,6 @@ describe("flashcard", () => {
           .set("Authorization", AUTHORIZATION_KEY)
         const data: IFlashcard[] = response.body
         expect(response.status).toBe(200)
-        console.log(data)
 
         const newCard = data.find(
           (flashcard) => flashcard.front === newCardMock.front
@@ -120,6 +119,41 @@ describe("flashcard", () => {
           .set("Authorization", AUTHORIZATION_KEY)
           .send({ ...newCardMock, front: initialCardsMock[0].front })
         expect(response.status).toBe(400)
+      })
+    })
+  })
+  describe("editing card", () => {
+    describe("patch card route", () => {
+      it("Function updates the requested flashcard with the correct fields and returns the updated flashcard whit a status code of 200", async () => {
+        let response
+
+        response = await request(app)
+          .patch(DEFAULT_ROUTE + initialCardsMock[0]._id)
+          .set("Authorization", AUTHORIZATION_KEY)
+          .send(newCardMock)
+
+        expect(response.status).toBe(200)
+        expect(response.body.front).toBe(newCardMock.front)
+        expect(response.body.back).toBe(newCardMock.back)
+
+        response = await request(app)
+          .get(DEFAULT_ROUTE)
+          .set("Authorization", AUTHORIZATION_KEY)
+        const data: IFlashcard[] = response.body
+
+        expect(response.status).toBe(200)
+
+        const editedCard = data.find(
+          (flashcard) => flashcard._id === initialCardsMock[0]._id
+        )
+
+        expect(editedCard).toBeTruthy()
+        expect(editedCard.front).toBe(newCardMock.front)
+        expect(editedCard.back).toBe(newCardMock.back)
+        expect(editedCard.author).toBe(newCardMock.author)
+        expect(
+          newCardMock.tags.every((tag) => editedCard.tags.includes(tag))
+        ).toBe(true)
       })
     })
   })
