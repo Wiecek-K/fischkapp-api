@@ -5,5 +5,6 @@ module.exports = {
   verbose: true,
   forceExit: true,
   clearMocks: true,
-  setupFilesAfterEnv: ["<rootDir>/test-setup.ts"],
+
+  setupFilesAfterEnv: ["<rootDir>/src/__tests__/test-setup.ts"],
 }

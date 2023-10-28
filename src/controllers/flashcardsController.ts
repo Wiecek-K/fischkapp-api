@@ -11,7 +11,6 @@ export const getFlashcards = asyncHandler(
   }
 )
 
-
 //GET /flashcard/author/:author
 export const getFlashcardsByAuthor = asyncHandler(
   async (req: Request, res: Response) => {
