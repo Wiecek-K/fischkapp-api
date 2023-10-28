@@ -1,7 +1,7 @@
 import request from "supertest"
 import { app } from "../index"
 import { IFlashcard } from "../models/flashcardModel"
-import { startingStateDB } from "./test-setup"
+import { initialCardsMock } from "./test-setup"
 const DEFAULT_ROUTE = "/api/v1/flashcards/"
 const AUTHORIZATION_KEY = "pss-this-is-my-secret"
 
@@ -16,7 +16,7 @@ describe("flashcard", () => {
 
         expect(response.status).toBe(200)
         expect(Array.isArray(data)).toBe(true)
-        expect(data.length).toBe(startingStateDB.length)
+        expect(data.length).toBe(initialCardsMock.length)
 
         const isSorted = data.every((flashcard, index, array) => {
           if (index === 0) return true
@@ -30,7 +30,7 @@ describe("flashcard", () => {
     })
     describe("get cards by author route", () => {
       it("Function returns correct number of flashcards written by the requested author, in the correct order, with status 200", async () => {
-        const startingStateFilteredByAuthor = startingStateDB.filter(
+        const startingStateFilteredByAuthor = initialCardsMock.filter(
           (flaschcards) => flaschcards.author === "Author1"
         )
 
@@ -55,7 +55,7 @@ describe("flashcard", () => {
     })
     describe("get cards by tag route", () => {
       it("Function returns correct number of flashcards with the requested tag, in the correct order, with status 200", async () => {
-        const startingStateFilteredByTag = startingStateDB.filter(
+        const startingStateFilteredByTag = initialCardsMock.filter(
           (flaschcards) => flaschcards.tags.includes("dog")
         )
 

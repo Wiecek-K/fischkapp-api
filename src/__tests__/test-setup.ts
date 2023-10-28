@@ -4,7 +4,7 @@ import flashcardModel from "../models/flashcardModel"
 
 const mongod = MongoMemoryServer.create()
 
-export const startingStateDB = [
+export const initialCardsMock = [
   {
     _id: "64a4d3c0b7008656790ecc8b",
     front: "Test Flashcard 1",
@@ -59,5 +59,5 @@ afterAll(async () => {
 beforeEach(async () => {
   await mongoose.connection.dropDatabase()
 
-  flashcardModel.insertMany(startingStateDB)
+  flashcardModel.insertMany(initialCardsMock)
 })
