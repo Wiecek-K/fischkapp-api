@@ -114,6 +114,13 @@ describe("flashcard", () => {
           newCardMock.tags.every((tag) => newCard.tags.includes(tag))
         ).toBe(true)
       })
+      it("function returns a status code of 400 when card with specific front value already exists", async () => {
+        const response = await request(app)
+          .post(DEFAULT_ROUTE)
+          .set("Authorization", AUTHORIZATION_KEY)
+          .send({ ...newCardMock, front: initialCardsMock[0].front })
+        expect(response.status).toBe(400)
+      })
     })
   })
 })
