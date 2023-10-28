@@ -5,6 +5,13 @@ import { initialCardsMock } from "./test-setup"
 const DEFAULT_ROUTE = "/api/v1/flashcards/"
 const AUTHORIZATION_KEY = "pss-this-is-my-secret"
 
+const newCardMock = {
+  front: "New Flashcard",
+  back: "Number Zero",
+  tags: ["new", "card"],
+  author: "New Author",
+}
+
 describe("flashcard", () => {
   describe("finding cards", () => {
     describe("get all cards route", () => {
@@ -30,7 +37,7 @@ describe("flashcard", () => {
     })
     describe("get cards by author route", () => {
       it("Function returns correct number of flashcards written by the requested author, in the correct order, with status 200", async () => {
-        const startingStateFilteredByAuthor = initialCardsMock.filter(
+        const initialCardsMockFilteredByAuthor = initialCardsMock.filter(
           (flaschcards) => flaschcards.author === "Author1"
         )
 
@@ -41,7 +48,7 @@ describe("flashcard", () => {
 
         expect(response.status).toBe(200)
         expect(Array.isArray(data)).toBe(true)
-        expect(data.length).toBe(startingStateFilteredByAuthor.length)
+        expect(data.length).toBe(initialCardsMockFilteredByAuthor.length)
 
         const isSorted = data.every((flashcard, index, array) => {
           if (index === 0) return true
@@ -55,7 +62,7 @@ describe("flashcard", () => {
     })
     describe("get cards by tag route", () => {
       it("Function returns correct number of flashcards with the requested tag, in the correct order, with status 200", async () => {
-        const startingStateFilteredByTag = initialCardsMock.filter(
+        const initialCardsMockFilteredByTag = initialCardsMock.filter(
           (flaschcards) => flaschcards.tags.includes("dog")
         )
 
@@ -66,7 +73,7 @@ describe("flashcard", () => {
 
         expect(response.status).toBe(200)
         expect(Array.isArray(data)).toBe(true)
-        expect(data.length).toBe(startingStateFilteredByTag.length)
+        expect(data.length).toBe(initialCardsMockFilteredByTag.length)
 
         const isSorted = data.every((flashcard, index, array) => {
           if (index === 0) return true
@@ -76,6 +83,36 @@ describe("flashcard", () => {
           )
         })
         expect(isSorted).toBe(true)
+      })
+    })
+  })
+  describe("creating card", () => {
+    describe("post card route", () => {
+      it("Function returns a status code of 201 and creates a new flashcard with the correct fields", async () => {
+        let response
+
+        response = await request(app)
+          .post(DEFAULT_ROUTE)
+          .set("Authorization", AUTHORIZATION_KEY)
+          .send(newCardMock)
+        expect(response.status).toBe(201)
+
+        response = await request(app)
+          .get(DEFAULT_ROUTE)
+          .set("Authorization", AUTHORIZATION_KEY)
+        const data: IFlashcard[] = response.body
+        expect(response.status).toBe(200)
+        console.log(data)
+
+        const newCard = data.find(
+          (flashcard) => flashcard.front === newCardMock.front
+        )
+        expect(newCard).toBeTruthy()
+        expect(newCard.back).toBe(newCardMock.back)
+        expect(newCard.author).toBe(newCardMock.author)
+        expect(
+          newCardMock.tags.every((tag) => newCard.tags.includes(tag))
+        ).toBe(true)
       })
     })
   })

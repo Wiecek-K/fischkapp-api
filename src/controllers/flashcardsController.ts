@@ -59,7 +59,7 @@ export const createFlashcard = asyncHandler(
       author: req.body?.author,
     })
 
-    res.status(200).json(flashcard)
+    res.status(201).json(flashcard)
   }
 )
 
