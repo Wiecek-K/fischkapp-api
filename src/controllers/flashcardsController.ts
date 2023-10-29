@@ -106,6 +106,6 @@ export const deleteFlashcard = asyncHandler(
     }
 
     const deleteFlashcard = await Flashcard.findByIdAndRemove(req.params.id)
-    res.status(200).json(deleteFlashcard)
+    res.status(204).json(deleteFlashcard)
   }
 )

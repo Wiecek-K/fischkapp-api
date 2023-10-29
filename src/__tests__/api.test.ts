@@ -1,7 +1,11 @@
 import request from "supertest"
 import { app } from "../index"
+
+import flashcardModel from "../models/flashcardModel"
 import { IFlashcard } from "../models/flashcardModel"
 import { initialCardsMock } from "./test-setup"
+import { ObjectId } from "mongodb"
+
 const DEFAULT_ROUTE = "/api/v1/flashcards/"
 const AUTHORIZATION_KEY = "pss-this-is-my-secret"
 
@@ -154,6 +158,32 @@ describe("flashcard", () => {
         expect(
           newCardMock.tags.every((tag) => editedCard.tags.includes(tag))
         ).toBe(true)
+      })
+    })
+  })
+  describe("deleting card", () => {
+    describe("delete card route", () => {
+      it("function deletes the requested flashcard if it was created less than 5 minutes ago and returns a status code of 204", async () => {
+        const idCardToDelete = new ObjectId(Date.now() - 5000).toString()
+        flashcardModel.create({
+          ...newCardMock,
+          createdAt: Date.now() - 5000,
+          _id: idCardToDelete,
+        })
+        let response
+
+        response = await request(app)
+          .delete(DEFAULT_ROUTE + idCardToDelete)
+          .set("Authorization", AUTHORIZATION_KEY)
+        expect(response.status).toBe(204)
+
+        response = await request(app)
+          .get(DEFAULT_ROUTE)
+          .set("Authorization", AUTHORIZATION_KEY)
+        const data: IFlashcard[] = response.body
+        expect(data.find((flashcard) => flashcard._id === idCardToDelete)).toBe(
+          undefined
+        )
       })
     })
   })
