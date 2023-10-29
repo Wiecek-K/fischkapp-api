@@ -209,6 +209,14 @@ describe("flashcard", () => {
           data.find((flashcard) => flashcard._id === idCardToDelete)
         ).not.toBe(undefined)
       })
+      it("function returns a status code of 404 if the requested flashcard does not exist", async () => {
+        const idNonExistingCard = new ObjectId().toString()
+
+        const response = await request(app)
+          .delete(DEFAULT_ROUTE + idNonExistingCard)
+          .set("Authorization", AUTHORIZATION_KEY)
+        expect(response.status).toBe(404)
+      })
     })
   })
 })
