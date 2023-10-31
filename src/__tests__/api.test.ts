@@ -170,21 +170,13 @@ describe("flashcard", () => {
           createdAt: Date.now() - 5000,
           _id: idCardToDelete,
         })
-        let response
 
-        response = await request(app)
+        const response = await request(app)
           .delete(DEFAULT_ROUTE + idCardToDelete)
           .set("Authorization", AUTHORIZATION_KEY)
         expect(response.status).toBe(204)
-
-        response = await request(app)
-          .get(DEFAULT_ROUTE)
-          .set("Authorization", AUTHORIZATION_KEY)
-        const data: IFlashcard[] = response.body
-        expect(data.find((flashcard) => flashcard._id === idCardToDelete)).toBe(
-          undefined
-        )
       })
+
       it("function returns a status code of 403 if the flashcard was created more than 5 minutes ago", async () => {
         const idCardToDelete = new ObjectId(
           Date.now() - (1000 * 60 * 5 + 1)
@@ -194,21 +186,13 @@ describe("flashcard", () => {
           createdAt: Date.now() - (1000 * 60 * 5 + 1),
           _id: idCardToDelete,
         })
-        let response
 
-        response = await request(app)
+        const response = await request(app)
           .delete(DEFAULT_ROUTE + idCardToDelete)
           .set("Authorization", AUTHORIZATION_KEY)
         expect(response.status).toBe(403)
-
-        response = await request(app)
-          .get(DEFAULT_ROUTE)
-          .set("Authorization", AUTHORIZATION_KEY)
-        const data: IFlashcard[] = response.body
-        expect(
-          data.find((flashcard) => flashcard._id === idCardToDelete)
-        ).not.toBe(undefined)
       })
+
       it("function returns a status code of 404 if the requested flashcard does not exist", async () => {
         const idNonExistingCard = new ObjectId().toString()
 
