@@ -18,6 +18,7 @@ connectDatabase()
 export const app = express()
 
 const swaggerOptions = {
+  failOnErrors: true,
   definition: {
     openapi: "3.1.0",
     info: {
@@ -41,7 +42,7 @@ const swaggerOptions = {
       },
     ],
   },
-  apis: ["./routes/*.ts"],
+  apis: ["src/routes/*"],
 }
 
 const specs = swaggerJSDoc(swaggerOptions)
