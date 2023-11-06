@@ -18,9 +18,8 @@ connectDatabase()
 export const app = express()
 
 const swaggerOptions = {
-  failOnErrors: true,
   definition: {
-    openapi: "3.1.0",
+    openapi: "3.0.0",
     info: {
       title: "Express FischkappAPI with Swagger",
       version: "0.1.0",
@@ -33,7 +32,7 @@ const swaggerOptions = {
       contact: {
         name: "Ajmag",
         url: "https://github.com/Wiecek-K/",
-        email: "aimag42@gmail.com",
+        email: "krystiandwiecek@gmail.com",
       },
     },
     servers: [
@@ -42,11 +41,20 @@ const swaggerOptions = {
       },
     ],
   },
-  apis: ["src/routes/*"],
+  apis: ["src/routes/*.ts"],
 }
 
 const specs = swaggerJSDoc(swaggerOptions)
-app.use("/docs", swaggerUi.serve, swaggerUi.setup(specs))
+app.use(
+  "/docs",
+  swaggerUi.serve,
+  swaggerUi.setup(specs, {
+    swaggerOptions: {
+      filter: true,
+      persistAuthorization: true,
+    },
+  })
+)
 
 const corsOptions = {
   origin: domain,
@@ -56,6 +64,7 @@ const corsOptions = {
     "ngrok-skip-browser-warning",
   ],
 }
+
 app.options("*", cors()) // enable pre-flight request
 app.use(checkAuthorization)
 app.use(cors(corsOptions))
