@@ -1,6 +1,7 @@
 import express from "express"
 import swaggerJSDoc from "swagger-jsdoc"
 import swaggerUi from "swagger-ui-express"
+import YAML from "yamljs"
 import dotenv from "dotenv"
 import cors from "cors"
 import "colors"
@@ -17,38 +18,16 @@ connectDatabase()
 
 export const app = express()
 
+const swaggerDefinition = YAML.load("swagger-config.yaml")
 const swaggerOptions = {
-  definition: {
-    openapi: "3.0.0",
-    info: {
-      title: "Express FischkappAPI with Swagger",
-      version: "0.1.0",
-      description:
-        "This is a simple CRUD API application made with Express and documented with Swagger",
-      license: {
-        name: "MIT",
-        url: "https://spdx.org/licenses/MIT.html",
-      },
-      contact: {
-        name: "Ajmag",
-        url: "https://github.com/Wiecek-K/",
-        email: "krystiandwiecek@gmail.com",
-      },
-    },
-    servers: [
-      {
-        url: "http://localhost:4000",
-      },
-    ],
-  },
+  swaggerDefinition,
   apis: ["src/routes/*.ts"],
 }
-
-const specs = swaggerJSDoc(swaggerOptions)
+const swaggerSpec = swaggerJSDoc(swaggerOptions)
 app.use(
   "/docs",
   swaggerUi.serve,
-  swaggerUi.setup(specs, {
+  swaggerUi.setup(swaggerSpec, {
     swaggerOptions: {
       filter: true,
       persistAuthorization: true,
