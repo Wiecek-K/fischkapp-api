@@ -1,11 +1,11 @@
 import express from "express"
-import swaggerJSDoc from "swagger-jsdoc"
 import swaggerUi from "swagger-ui-express"
-import YAML from "yamljs"
 import dotenv from "dotenv"
 import cors from "cors"
 import "colors"
 
+import { swaggerConfig } from "../swaggerconfig"
+import { swaggerUiOptions } from "../swaggerconfig"
 import flashcardRouter from "./routes/flashcards"
 import { errorHandler } from "./middlewares/errors"
 import { connectDatabase } from "./config/database"
@@ -18,20 +18,11 @@ connectDatabase()
 
 export const app = express()
 
-const swaggerDefinition = YAML.load("swagger-config.yaml")
-const swaggerOptions = {
-  swaggerDefinition,
-  apis: ["src/routes/*.ts"],
-}
-const swaggerSpec = swaggerJSDoc(swaggerOptions)
 app.use(
   "/docs",
   swaggerUi.serve,
-  swaggerUi.setup(swaggerSpec, {
-    swaggerOptions: {
-      filter: true,
-      persistAuthorization: true,
-    },
+  swaggerUi.setup(swaggerConfig, {
+    swaggerOptions: swaggerUiOptions,
   })
 )
 
