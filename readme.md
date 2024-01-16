@@ -2,6 +2,8 @@
   Fischkapp API 📄
 </h1>
 
+[<h2>Docs:</h2>](https://fischkappapi.onrender.com/docs/)
+
 This project is an API for the Fischkapp.
 
 ---
