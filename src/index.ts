@@ -13,7 +13,7 @@ import checkAuthorization from "./middlewares/corsMiddlewares"
 
 dotenv.config()
 const port = process.env.PORT
-const domain = process.env.DOMAIN
+const domains = process.env.DOMAINS.split(", ")
 connectDatabase()
 
 export const app = express()
@@ -27,7 +27,14 @@ app.use(
 )
 
 const corsOptions = {
-  origin: domain,
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  origin: function (origin: string, callback: Function) {
+    if (domains.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error("Not allowed by CORS"))
+    }
+  },
   allowedHeaders: [
     "Content-Type",
     "Authorization",
